@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Security Verification · Cloud File Security System{% endblock %}
+{% block content %}
+<h1 class="h3 text-white mb-3">SHA-256 Integrity Verification</h1>
+<div class="cfss-card p-3 mb-4">
+  <table class="table table-dark table-sm align-middle mb-0">
+    <thead><tr><th>File Name</th><th>Status</th><th class="text-end">Verify</th></tr></thead>
+    <tbody>
+      {% for f in files %}
+      <tr>
+        <td>{{ f.original_filename }}</td>
+        <td>{{ f.last_verified_status }}</td>
+        <td class="text-end">
+          <form method="POST" action="{{ url_for('files.verify_file', file_id=f.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="btn btn-info btn-sm">Verify Integrity</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3" class="text-center text-secondary py-3">No files uploaded yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if result %}
+<div class="cfss-card p-4">
+  <h2 class="h5 text-white mb-3">Verification Result · {{ selected_file.original_filename if selected_file else '' }}</h2>
+  <p class="mb-2"><strong>Status:</strong> {{ result.status }}</p>
+  <p class="mb-2 small"><strong>Original SHA-256:</strong> <code class="cfss-mono">{{ result.original_hash }}</code></p>
+  <p class="mb-0 small"><strong>Downloaded SHA-256:</strong> <code class="cfss-mono">{{ result.computed_hash }}</code></p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Cloud File Security System{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 text-white mb-1">Security Dashboard</h1>
+    <p class="small text-secondary mb-0">Storage Mode: {{ 'AWS S3 Private Bucket' if storage_mode == 's3' else 'Local Encrypted Vault' }}</p>
+  </div>
+  <a href="{{ url_for('files.upload_file') }}" class="btn btn-primary btn-sm">Upload &amp; Encrypt File</a>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="cfss-card p-3"><div class="small text-secondary">Total Files</div><div class="fs-4 fw-semibold cfss-mono text-white">{{ total_files }}</div></div></div>
+  <div class="col-md-3"><div class="cfss-card p-3"><div class="small text-secondary">Storage Used</div><div class="fs-4 fw-semibold cfss-mono text-white">{{ total_storage }} B</div></div></div>
+  <div class="col-md-3"><div class="cfss-card p-3"><div class="small text-secondary">Encrypted Files</div><div class="fs-4 fw-semibold cfss-mono text-white">{{ encrypted_files }}</div></div></div>
+  <div class="col-md-3"><div class="cfss-card p-3"><div class="small text-secondary">Verified Checks</div><div class="fs-4 fw-semibold cfss-mono text-white">{{ verified_checks }}</div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="cfss-card p-3">
+      <h2 class="h6 text-white mb-3">Recent Encrypted Files</h2>
+      <div class="table-responsive">
+        <table class="table table-dark table-hover table-sm align-middle mb-0">
+          <thead><tr><th>Filename</th><th class="text-end">Size</th><th>Integrity</th></tr></thead>
+          <tbody>
+            {% for f in recent_files %}
+              <tr>
+                <td>{{ f.original_filename }}</td>
+                <td class="text-end cfss-mono">{{ f.file_size }} B</td>
+                <td>{{ f.last_verified_status }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="3" class="text-secondary text-center py-3">No files uploaded yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="cfss-card p-3">
+      <h2 class="h6 text-white mb-3">Recent Activity</h2>
+      <ul class="list-group list-group-flush">
+        {% for log in recent_logs %}
+          <li class="list-group-item bg-transparent text-light d-flex justify-content-between small px-0">
+            <span>{{ log.action }} {% if log.filename %}· {{ log.filename }}{% endif %}</span>
+            <span class="cfss-mono">{{ log.status }}</span>
+          </li>
+        {% else %}
+          <li class="list-group-item bg-transparent text-secondary small px-0">No events logged.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

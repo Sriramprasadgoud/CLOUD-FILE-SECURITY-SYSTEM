@@ -1,0 +1,6 @@
+{
+  "name": "Cloud File Security System",
+  "description": "AES-256-GCM encrypted cloud file management system with AWS S3 storage, SHA-256 integrity verification, and searching/sorting algorithm analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

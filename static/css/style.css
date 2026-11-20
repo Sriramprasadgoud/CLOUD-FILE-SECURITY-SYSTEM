@@ -1,0 +1,60 @@
+:root {
+  --cfss-bg: #070d1a;
+  --cfss-surface: #0d1628;
+  --cfss-sidebar: #0b1325;
+  --cfss-border: #1e293b;
+  --cfss-accent: #2563eb;
+  --cfss-sky: #38bdf8;
+}
+
+body {
+  background-color: var(--cfss-bg);
+  color: #e2e8f0;
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+}
+
+.cfss-sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background-color: var(--cfss-sidebar);
+  border-right: 1px solid var(--cfss-border);
+}
+
+.cfss-card {
+  background-color: var(--cfss-surface);
+  border: 1px solid var(--cfss-border);
+  border-radius: 12px;
+}
+
+.cfss-nav-link {
+  color: #cbd5e1;
+  border-radius: 8px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.cfss-nav-link:hover {
+  background-color: rgba(30, 41, 59, 0.7);
+  color: #ffffff;
+}
+
+.cfss-nav-link.active {
+  background-color: var(--cfss-accent);
+  color: #ffffff;
+}
+
+.cfss-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.cfss-dropzone {
+  border: 2px dashed #334155;
+  border-radius: 12px;
+  background-color: var(--cfss-surface);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.cfss-dropzone.dragover {
+  border-color: #3b82f6;
+  background-color: rgba(30, 58, 138, 0.18);
+}

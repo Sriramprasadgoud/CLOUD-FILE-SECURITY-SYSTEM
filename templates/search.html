@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Search Files · Cloud File Security System{% endblock %}
+{% block content %}
+<h1 class="h3 text-white mb-3">Search Files</h1>
+<form method="GET" action="{{ url_for('dashboard.search_files') }}" class="cfss-card p-3 mb-4 row g-2 align-items-center">
+  <div class="col-md-3">
+    <select name="algorithm" class="form-select">
+      <option value="linear" {% if algorithm == 'linear' %}selected{% endif %}>Linear Search O(n)</option>
+      <option value="binary" {% if algorithm == 'binary' %}selected{% endif %}>Binary Search O(log n)</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select name="field" class="form-select">
+      <option value="filename" {% if field == 'filename' %}selected{% endif %}>By Filename</option>
+      <option value="extension" {% if field == 'extension' %}selected{% endif %}>By Extension</option>
+      <option value="file_type" {% if field == 'file_type' %}selected{% endif %}>By File Type</option>
+    </select>
+  </div>
+  <div class="col-md-4">
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search query..." />
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+  </div>
+</form>
+
+{% if metrics %}
+<div class="cfss-card p-3 mb-3 small">
+  <strong>{{ metrics.algorithm }}</strong> · Complexity: <span class="cfss-mono">{{ metrics.time_complexity }}</span> · Comparisons: <span class="cfss-mono">{{ metrics.comparisons }}</span>
+</div>
+{% endif %}
+
+{% if results is not none %}
+<div class="cfss-card p-3">
+  <table class="table table-dark table-sm mb-0">
+    <thead><tr><th>Filename</th><th>Type</th><th class="text-end">Size</th></tr></thead>
+    <tbody>
+      {% for r in results %}
+      <tr><td>{{ r.original_filename }}</td><td>{{ r.file_type }}</td><td class="text-end cfss-mono">{{ r.file_size }} B</td></tr>
+      {% else %}
+      <tr><td colspan="3" class="text-center text-secondary py-3">No matching records.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

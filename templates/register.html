@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Register · Cloud File Security System{% endblock %}
+{% block auth_content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="cfss-card p-4">
+      <h1 class="h4 text-white mb-1">Create Encrypted Vault Account</h1>
+      <p class="small text-secondary mb-4">Per-user isolated cloud storage with SHA-256 verification.</p>
+      <form method="POST" action="{{ url_for('auth.register') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="mb-3">
+          <label class="form-label small">Username</label>
+          <input type="text" name="username" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label small">Email Address</label>
+          <input type="email" name="email" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label small">Password (min 8 chars)</label>
+          <input type="password" name="password" class="form-control" minlength="8" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label small">Confirm Password</label>
+          <input type="password" name="confirm_password" class="form-control" minlength="8" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Create Account</button>
+      </form>
+      <p class="mt-3 mb-0 small text-secondary text-center">
+        Already registered? <a href="{{ url_for('auth.login') }}">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}My Files · Cloud File Security System{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 text-white mb-0">My Encrypted Files</h1>
+  <a href="{{ url_for('files.upload_file') }}" class="btn btn-primary btn-sm">Upload File</a>
+</div>
+
+<div class="cfss-card p-3">
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>Type</th>
+          <th class="text-end">Size</th>
+          <th>Upload Date</th>
+          <th>Encryption</th>
+          <th>Integrity</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in pagination.items %}
+        <tr>
+          <td>{{ f.original_filename }}</td>
+          <td class="small text-secondary">{{ f.file_type }}</td>
+          <td class="text-end cfss-mono small">{{ f.file_size }} B</td>
+          <td class="cfss-mono small text-secondary">{{ f.upload_date.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td class="small text-info">AES-256-GCM ({{ f.storage_provider }})</td>
+          <td class="small">{{ f.last_verified_status }}</td>
+          <td class="text-end">
+            <a href="{{ url_for('files.download_file', file_id=f.id) }}" class="btn btn-outline-light btn-sm">Download</a>
+            <form method="POST" action="{{ url_for('files.verify_file', file_id=f.id) }}" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button type="submit" class="btn btn-outline-info btn-sm">Verify</button>
+            </form>
+            <form method="POST" action="{{ url_for('files.delete_file', file_id=f.id) }}" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-secondary py-4">No files found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

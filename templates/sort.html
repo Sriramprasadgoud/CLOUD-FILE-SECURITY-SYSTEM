@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Sort Files · Cloud File Security System{% endblock %}
+{% block content %}
+<h1 class="h3 text-white mb-3">Sort Files</h1>
+<form method="GET" action="{{ url_for('dashboard.sort_files') }}" class="cfss-card p-3 mb-4 row g-2 align-items-center">
+  <div class="col-md-3">
+    <select name="algorithm" class="form-select">
+      <option value="merge" {% if algorithm == 'merge' %}selected{% endif %}>Merge Sort O(n log n)</option>
+      <option value="quick" {% if algorithm == 'quick' %}selected{% endif %}>Quick Sort</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select name="sort_by" class="form-select">
+      <option value="filename" {% if sort_by == 'filename' %}selected{% endif %}>Filename</option>
+      <option value="file_size" {% if sort_by == 'file_size' %}selected{% endif %}>File Size</option>
+      <option value="upload_date" {% if sort_by == 'upload_date' %}selected{% endif %}>Upload Date</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select name="order" class="form-select">
+      <option value="asc" {% if order == 'asc' %}selected{% endif %}>Ascending</option>
+      <option value="desc" {% if order == 'desc' %}selected{% endif %}>Descending</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <button type="submit" class="btn btn-primary w-100">Execute Sort</button>
+  </div>
+</form>
+
+{% if metrics %}
+<div class="cfss-card p-3 mb-3 small">
+  <strong>{{ metrics.algorithm }}</strong> · Complexity: <span class="cfss-mono">{{ metrics.time_complexity }}</span> · Comparisons: <span class="cfss-mono">{{ metrics.comparisons }}</span>
+</div>
+{% endif %}
+
+<div class="cfss-card p-3">
+  <table class="table table-dark table-sm mb-0">
+    <thead><tr><th>Filename</th><th class="text-end">Size</th><th>Upload Date</th></tr></thead>
+    <tbody>
+      {% for r in results %}
+      <tr><td>{{ r.original_filename }}</td><td class="text-end cfss-mono">{{ r.file_size }} B</td><td class="cfss-mono small">{{ r.upload_date }}</td></tr>
+      {% else %}
+      <tr><td colspan="3" class="text-center text-secondary py-3">No files available to sort.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
